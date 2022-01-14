@@ -36,7 +36,7 @@ class ResumeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response('Formulario recibido');
     }
 
     /**
