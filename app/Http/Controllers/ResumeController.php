@@ -21,7 +21,9 @@ class ResumeController extends Controller
      */
     public function index()
     {
-        //
+        $resumes = auth()->user()->resumesAA;
+        //return view('resume.index', ['resume' => $resume]);
+        return view('resumes.index', compact('resumes')); // Lo mismo que la línea de arriba
     }
 
     /**
@@ -50,7 +52,7 @@ class ResumeController extends Controller
             'email' => auth()->user()->email,
         ]);
 
-        return response("Created resume $resume->id");
+        return redirect()->route('resumes.index');
     }
 
     /**
