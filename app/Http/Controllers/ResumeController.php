@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Resume;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule; //Para la validacion el title en Update
 
 class ResumeController extends Controller
 {
@@ -21,7 +22,7 @@ class ResumeController extends Controller
      */
     public function index()
     {
-        $resumes = auth()->user()->resumesAA;
+        $resumes = auth()->user()->resumesRel;
         //return view('resume.index', ['resume' => $resume]);
         return view('resumes.index', compact('resumes')); // Lo mismo que la línea de arriba
     }
@@ -46,7 +47,16 @@ class ResumeController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        $resume = $user->resumesAA()->create([
+
+        // MANEJO DE ERRORES MANUAL [Caso: Mandar error si el usuario introduce un título repetido]
+        // $resume = $user->resumesRel()->where('title', $request->title)->first();
+        // if ($resume) {
+        //     return back()
+        //         ->withErrors(['title' => 'You already have a resume with this title.'])
+        //         ->withInput(['title' => $request->title]);
+        // }
+
+        $resume = $user->resumesRel()->create([
             'title' => $request['title'],
             'name' => auth()->user()->name,
             'email' => auth()->user()->email,
@@ -73,8 +83,10 @@ class ResumeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Resume $resume)
-    {
-        //
+    {   // public funtion edit(Resume $request)
+        //   $resume = auth()->user()->resumesRel()->where('id', $request->resume);
+        //   $resume = Resume::where('id', $request->resume);
+        return view('resumes.edit', compact('resume'));
     }
 
     /**
@@ -86,7 +98,18 @@ class ResumeController extends Controller
      */
     public function update(Request $request, Resume $resume)
     {
-        //
+        // VALIDACIONES AUTOMÁTICAS
+        $request->validate([
+            // 'name' => ['required', 'string'],  -> ES LO MISMO QUE ABAJO
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'website' => 'nullable|url',
+            'picture' => 'nullable|image',
+            'about' => 'nullable|string',
+            'title' => Rule::unique('resumes')->where(function ($query) use ($resume) {
+                return $query->where('user_id', $resume->user->id);
+            })->ignore($resume->id) // Para que ignore el que estamos editando (el que le pasamos)
+        ]);
     }
 
     /**
