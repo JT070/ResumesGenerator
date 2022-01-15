@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resume;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ResumeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +43,14 @@ class ResumeController extends Controller
      */
     public function store(Request $request)
     {
-        return response('Formulario recibido');
+        $user = auth()->user();
+        $resume = $user->resumesAA()->create([
+            'title' => $request['title'],
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+        ]);
+
+        return response("Created resume $resume->id");
     }
 
     /**
