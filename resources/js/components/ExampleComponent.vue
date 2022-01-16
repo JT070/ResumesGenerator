@@ -9,11 +9,11 @@
             <input type="text" class="form-control" name="skills[]" v-model="inputs[i]" />
           </div>
           <div class="col-2">
-            <button class="btn btn-danger" @click.prevent="remove(i)">Delete</button>
+            <button class="btn btn-danger" @click.prevent="inputs.splice(i, 1)">Delete</button>
           </div>
         </div>
         <div>
-            <button class="ml-3 btn btn-primary" @click.prevent="add()">
+            <button class="ml-3 btn btn-primary" @click.prevent="inputs.push('')">
               Add
             </button>
         </div>
@@ -32,12 +32,7 @@ export default {
     };
   },
   methods: {
-    add() {
-      this.inputs.push('');
-    },
-    remove (i) {
-        this.inputs.splice(i, 1);
-    }
+    
   },
 };
 </script>
