@@ -33,7 +33,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="m-2">
+                            <a href="{{ route('resumes.create') }}">
+                                New Resume
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
