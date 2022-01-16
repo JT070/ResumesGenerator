@@ -6,7 +6,7 @@
         <div v-for="(input, i) in inputs" :key="i" class="d-flex mb-2 p-0">
           <div class="col-10">
             <!-- v-model: Es para mantener sincronizados los valores del elemento con una variable dada -->
-            <input type="text" class="form-control" name="skills[]" v-model="inputs[i]" />
+            <input placeholder="JavaScript" type="text" class="form-control" name="skills[]" v-model="inputs[i]" />
           </div>
           <div class="col-2">
             <button class="btn btn-danger" @click.prevent="inputs.splice(i, 1)">Delete</button>
@@ -23,12 +23,19 @@
 
 <script>
 export default {
+    // props = Propiedades
+  props: {
+      skills: {
+          type: Array,
+          default: () => ([]),
+      }
+  },
   mounted() {
     console.log("Component mounted.");
   },
   data() {
     return {
-      inputs: ["uno", "dos", "tres"],
+      inputs: this.skills,
     };
   },
   methods: {

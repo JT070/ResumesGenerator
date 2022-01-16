@@ -112,6 +112,7 @@ class ResumeController extends Controller
             'website' => 'nullable|url',
             'picture' => 'nullable|image',
             'about' => 'nullable|string',
+            'skills' => 'nullable|array',
             'title' => Rule::unique('resumes')
                 // Para que ignore el que estamos editando (el que le pasamos) // Lo pasamos a FAF 
                 ->where(fn ($query) => $query->where('user_id', $resume->user->id))

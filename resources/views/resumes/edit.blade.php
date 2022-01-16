@@ -122,7 +122,7 @@
                         </div>
 
                         <div class="form-group">
-                            <example-component/>
+                            <Skills :skills="{{ $resume->skills ?? '[]' }}" />
                         </div> 
 
                         <div class="row mb-0">
